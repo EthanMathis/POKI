@@ -127,9 +127,29 @@ Which emotion is associated with the least number of poems?		[ Anger : 11105 ]
 				 group by Emotion.Name
 				 order by COUNT(PoemId);
 
-Which grade has the largest number of poems with an emotion of joy?
-Which gender has the least number of poems with an emotion of fear?
+Which grade has the largest number of poems with an emotion of joy?		[ 5th Grade  -  8928 ]
+
+	select top 1 Grade.Name,
+			   COUNT(Poem.Id) as JoyfulPoemCount
+			   from Grade
+			   left join Author on Author.GradeId = Grade.Id
+			   left join Poem on Poem.AuthorId = Author.Id
+			   left join PoemEmotion on Poem.Id = PoemEmotion.PoemId
+			   where PoemEmotion.EmotionId = 4
+			   group by Grade.Name
+			   order by COUNT(Poem.Id) desc
+
+Which gender has the least number of poems with an emotion of fear?			[ Ambiguous  -  1435 ]
+
+	select top 1 Gender.Name,
+				 COUNT(Author.GenderId) as FearPoemCount
+				 from Poem
+				 left join Author on Author.Id = Poem.AuthorId
+				 left join Gender on Gender.Id = Author.GenderId
+				 left join PoemEmotion on PoemEmotion.PoemId = Poem.Id
+				 left join Emotion on Emotion.Id = PoemEmotion.EmotionId
+				 where Emotion.Name = 'fear'
+				 group by Gender.Name
+				 order by COUNT(Author.GenderId) asc
+
 */
-
-
-		   
